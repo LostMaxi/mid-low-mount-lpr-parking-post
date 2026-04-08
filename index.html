@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAR IN INTERNATIONAL — 500萬像素中低位車牌辨識停車柱</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic Pro','Microsoft JhengHei',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+.page{max-width:960px;margin:0 auto;padding:40px 24px}
+.lang-bar{display:flex;gap:8px;margin-bottom:32px;border-bottom:1px solid #e0e0e0;padding-bottom:16px;align-items:center}
+.lang-label{font-size:11px;color:#999;letter-spacing:1px;margin-right:4px}
+.lang-btn{padding:6px 20px;font-size:13px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer;color:#666;transition:all .15s;font-family:inherit}
+.lang-btn:hover{border-color:#888;color:#333}
+.lang-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.header{display:grid;grid-template-columns:1fr 140px;gap:32px;align-items:start;margin-bottom:36px;padding-bottom:28px;border-bottom:2px solid #1a1a1a}
+.brand-name{font-size:13px;font-weight:600;letter-spacing:2px;color:#1a1a1a;margin-bottom:4px;text-transform:uppercase}
+.brand-sub{font-size:12px;color:#888;margin-bottom:14px}
+.product-title{font-size:26px;font-weight:400;line-height:1.3;color:#1a1a1a;letter-spacing:-0.3px}
+.badge{font-size:11px;padding:4px 12px;border:1px solid #ccc;border-radius:2px;color:#888;display:inline-block;margin-top:10px;letter-spacing:0.5px}
+.product-img{width:140px;height:320px;object-fit:cover;object-position:center top;border-radius:6px;border:1px solid #e0e0e0;display:block}
+.img-placeholder{width:140px;height:320px;background:#f0f0ee;border-radius:6px;border:1px solid #e0e0e0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px}
+.section{margin-bottom:36px}
+.section-title{font-size:10px;font-weight:600;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e8e8e6}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.feat-group{padding:16px;border:1px solid #e8e8e6;border-radius:6px;background:#fff}
+.feat-group-title{font-size:11px;font-weight:600;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.feat-list{list-style:none}
+.feat-list li{font-size:13px;color:#333;padding:4px 0 4px 14px;position:relative;line-height:1.55;border-bottom:1px solid #f0f0ee}
+.feat-list li:last-child{border-bottom:none}
+.feat-list li::before{content:'·';position:absolute;left:2px;color:#aaa;font-size:16px;top:2px}
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.spec-card{background:#fff;border:1px solid #e8e8e6;border-radius:6px;padding:16px}
+.spec-table{width:100%;border-collapse:collapse;font-size:13px}
+.spec-table caption{font-size:10px;font-weight:600;letter-spacing:1.5px;color:#999;text-transform:uppercase;text-align:left;padding-bottom:10px}
+.spec-table tr:not(:last-child){border-bottom:1px solid #f0f0ee}
+.spec-table td{padding:7px 0;vertical-align:top;line-height:1.5}
+.spec-table td:first-child{color:#888;width:44%;padding-right:10px;font-size:12px}
+.spec-table td:last-child{color:#1a1a1a}
+.app-box{background:#fff;border:1px solid #e8e8e6;border-radius:6px;padding:20px;font-size:13.5px;line-height:1.8;color:#333}
+.app-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.app-tag{font-size:11px;padding:5px 14px;border:1px solid #ddd;border-radius:2px;color:#888;background:#fafaf8}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #e0e0e0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-size:13px;font-weight:600;color:#1a1a1a;letter-spacing:0.5px}
+.footer-contact{font-size:12px;color:#888;line-height:1.8;text-align:right}
+.footer-contact a{color:#555;text-decoration:none}
+.footer-contact a:hover{color:#1a1a1a}
+[data-lang]{display:none}
+[data-lang].active{display:block}
+@media(max-width:640px){
+  .feature-grid,.spec-grid{grid-template-columns:1fr}
+  .header{grid-template-columns:1fr}
+  .product-img,.img-placeholder{width:100%;height:220px}
+  .footer{flex-direction:column;align-items:flex-start}
+  .footer-contact{text-align:left}
+}
+@media print{
+  body{background:#fff}
+  .lang-bar{display:none}
+  [data-lang]{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="lang-bar">
+  <span class="lang-label">LANG</span>
+  <button class="lang-btn active" onclick="setLang('zh',this)">繁體中文</button>
+  <button class="lang-btn" onclick="setLang('ja',this)">日本語</button>
+  <button class="lang-btn" onclick="setLang('en',this)">English</button>
+</div>
+
+<!-- ===== 繁體中文 ===== -->
+<div data-lang="zh" class="active">
+<div class="header">
+  <div>
+    <div class="brand-name">CAR IN INTERNATIONAL</div>
+    <div class="brand-sub">凱映國際股份有限公司</div>
+    <div class="product-title">500萬像素<br>中低位車牌辨識、停車柱</div>
+    <div class="badge">PW-PS51 &nbsp;·&nbsp; 產品規格書</div>
+  </div>
+  <img class="product-img" src="Japan_CarinSmart_Parking_Terminal_-2.png" alt="CAR IN 智慧停車柱" onerror="this.outerHTML='<div class=\'img-placeholder\'>Product Image</div>'">
+</div>
+<div class="section">
+  <div class="section-title">產品特點</div>
+  <div class="feature-grid">
+    <div class="feat-group">
+      <div class="feat-group-title">相機特性</div>
+      <ul class="feat-list">
+        <li>星光級光學感測器，適用於低照度環境車輛抓拍辨識</li>
+        <li>500萬像素工業級品質，視頻解析度 2880×1620</li>
+        <li>支援 H.264、H.265 等多種編碼標準</li>
+        <li>自動增益、自動白平衡、寬動態</li>
+        <li>適應充電站等多種複雜光照條件環境</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">性能特性</div>
+      <ul class="feat-list">
+        <li>支援1台相機同時管理2個車位</li>
+        <li>支援 RS485、雲端、藍牙（選配）控制車位鎖</li>
+        <li>支援入場大傾角辨識 &lt;65°，車牌辨識率 &gt;99%</li>
+        <li>支援 USB、儲存擴充、紅綠燈指示介面</li>
+        <li>雙網口，支援手拉手組網，減少施工佈線</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">功能特性</div>
+      <ul class="feat-list">
+        <li>精準辨識燃油車、新能源車，車牌號碼及顏色</li>
+        <li>支援驶入、停穩、驶離、空位4種泊位狀態偵測</li>
+        <li>支援異物佔位、人員滯留、視頻遮擋告警</li>
+        <li>內置屏幕實時滾動播放車牌辨識結果及泊位狀態</li>
+        <li>支援自訂字幕、字體大小、顯示格式、顏色</li>
+        <li>支援黑白名單車輛管理</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">雲端特性</div>
+      <ul class="feat-list">
+        <li>網路自適應技術，確保異常網路環境下有效監控</li>
+        <li>支援 SDK、HTTP、MQTT 多種二次開發方式</li>
+        <li>支援設備遠端管理、OTA 線上升級、NTP 自動校時</li>
+        <li>支援泊位遠端實時採圖查看、遠程升降控鎖</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">產品規格</div>
+  <div class="spec-grid">
+    <div class="spec-card">
+      <table class="spec-table"><caption>攝像機</caption>
+        <tr><td>成像器件</td><td>1/2.7" 500萬像素 CMOS</td></tr>
+        <tr><td>鏡頭</td><td>2.5mm 定焦鏡頭</td></tr>
+        <tr><td>光圈</td><td>F2.0</td></tr>
+        <tr><td>快門</td><td>自動/手動，1/100000～1/25s</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>圖像</caption>
+        <tr><td>採集規格</td><td>2880×1620 @ 25fps</td></tr>
+        <tr><td>解析度</td><td>2880×1620 / 2304×1296（預設）/ 1080P / 720P</td></tr>
+        <tr><td>幀率</td><td>1～25幀可設，預設12</td></tr>
+        <tr><td>編碼格式</td><td>H.264 / H.265，預設 H.264</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>智能功能</caption>
+        <tr><td>車位偵測</td><td>佔用/空閒狀態、非機動車佔用</td></tr>
+        <tr><td>車牌辨識</td><td>辨識車牌號碼及顏色</td></tr>
+        <tr><td>告警功能</td><td>行人徘徊、跨車位告警、非新能源車準入</td></tr>
+        <tr><td>停留計時</td><td>記錄並上報驶入/驶離時間</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>介面與通用</caption>
+        <tr><td>網口</td><td>2路 100M Base-TX 自適應乙太網</td></tr>
+        <tr><td>RS485 / USB</td><td>各 ×2 / ×1</td></tr>
+        <tr><td>音訊</td><td>外接 MIC ×1 / 揚聲器 5W@8Ω</td></tr>
+        <tr><td>SD卡槽</td><td>最大擴充 128GB</td></tr>
+        <tr><td>電源</td><td>DC 24V</td></tr>
+        <tr><td>工作溫度</td><td>-30℃ ～ +60℃</td></tr>
+        <tr><td>濕度</td><td>10%～95%，無冷凝</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">典型應用</div>
+  <div class="app-box">本產品主要用於新能源充電車位狀態偵測，辨識車位佔用情況與充/停時間，同時對驶入、停穩、驶離的車牌進行辨識，透過有線/無線聯控車位鎖與道閘設備，並可實時顯示互動車位鎖狀態及充電時長，實現防佔位管理、限超時停放及泊位數位化採集。
+    <div class="app-tags">
+      <span class="app-tag">防佔位限超時</span><span class="app-tag">實時資訊發佈</span>
+      <span class="app-tag">預約停車場景</span><span class="app-tag">RS485/藍牙地鎖</span>
+      <span class="app-tag">遠端雲端管理</span><span class="app-tag">LED 互動屏顯</span>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-brand">CAR IN INTERNATIONAL　凱映國際股份有限公司</div>
+  <div class="footer-contact">T：(02)2705-7716<br><a href="https://www.altob.com.tw" target="_blank">www.altob.com.tw</a></div>
+</div>
+</div>
+
+<!-- ===== 日本語 ===== -->
+<div data-lang="ja">
+<div class="header">
+  <div>
+    <div class="brand-name">CAR IN INTERNATIONAL</div>
+    <div class="brand-sub">凱映國際株式会社</div>
+    <div class="product-title">500万画素<br>中低位ナンバー認識・パーキングポール</div>
+    <div class="badge">PW-PS51 &nbsp;·&nbsp; 製品仕様書</div>
+  </div>
+  <img class="product-img" src="Japan_CarinSmart_Parking_Terminal_-2.png" alt="CAR IN スマートパーキングポール" onerror="this.outerHTML='<div class=\'img-placeholder\'>Product Image</div>'">
+</div>
+<div class="section">
+  <div class="section-title">製品の特長</div>
+  <div class="feature-grid">
+    <div class="feat-group">
+      <div class="feat-group-title">カメラ特性</div>
+      <ul class="feat-list">
+        <li>スターライト光学センサー、低照度環境での車両撮影・認識に対応</li>
+        <li>500万画素産業グレード、映像解像度 2880×1620</li>
+        <li>H.264、H.265 などの複数コーデック対応</li>
+        <li>自動ゲイン・自動ホワイトバランス・ワイドダイナミック</li>
+        <li>充電ステーション等の複雑な照明環境に対応</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">性能特性</div>
+      <ul class="feat-list">
+        <li>1台のカメラで2駐車スペースの同時管理に対応</li>
+        <li>RS485・クラウド・Bluetooth（オプション）でロック制御</li>
+        <li>入場時大傾斜角認識 &lt;65°、ナンバー認識率 &gt;99%</li>
+        <li>USB・ストレージ拡張・信号灯インターフェース対応</li>
+        <li>デュアルネットポート、数珠つなぎ配線で施工を簡略化</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">機能特性</div>
+      <ul class="feat-list">
+        <li>ガソリン車・EV車を精確に識別、ナンバー及び色を認識</li>
+        <li>入場・停車・出場・空車の4駐車状態検出</li>
+        <li>異物占有・人物滞留・映像遮断アラーム機能</li>
+        <li>内蔵画面でナンバー認識結果・駐車状態をリアルタイム表示</li>
+        <li>字幕・フォント・表示フォーマット・カラーのカスタマイズ対応</li>
+        <li>ブラック/ホワイトリスト車両管理対応</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">クラウド特性</div>
+      <ul class="feat-list">
+        <li>ネットワーク自動適応技術、パケットロス環境でも有効な監視を実現</li>
+        <li>SDK・HTTP・MQTT など複数の二次開発方式に対応</li>
+        <li>リモートデバイス管理・OTAアップデート・NTP自動時刻同期</li>
+        <li>駐車スペースのリモートリアルタイム画像確認・ロック遠隔操作</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">製品仕様</div>
+  <div class="spec-grid">
+    <div class="spec-card">
+      <table class="spec-table"><caption>カメラ</caption>
+        <tr><td>撮像素子</td><td>1/2.7" 500万画素 CMOS</td></tr>
+        <tr><td>レンズ</td><td>2.5mm 固定焦点</td></tr>
+        <tr><td>絞り</td><td>F2.0</td></tr>
+        <tr><td>シャッター</td><td>自動/手動、1/100000～1/25s</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>映像</caption>
+        <tr><td>取得仕様</td><td>2880×1620 @ 25fps</td></tr>
+        <tr><td>解像度</td><td>2880×1620 / 2304×1296（既定）/ 1080P / 720P</td></tr>
+        <tr><td>フレームレート</td><td>1～25fps 設定可、既定12fps</td></tr>
+        <tr><td>コーデック</td><td>H.264 / H.265、既定 H.264</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>インテリジェント機能</caption>
+        <tr><td>駐車検出</td><td>占有/空き状態、非自動車占有</td></tr>
+        <tr><td>ナンバー認識</td><td>ナンバー番号及び色の認識</td></tr>
+        <tr><td>アラーム</td><td>人物徘徊・複数スペース跨ぎ・EV以外入場</td></tr>
+        <tr><td>滞留計測</td><td>入場・出場時刻の記録と送信</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>インターフェース・一般仕様</caption>
+        <tr><td>ネットポート</td><td>100M Base-TX 自動適応 ×2</td></tr>
+        <tr><td>RS485 / USB</td><td>各 ×2 / ×1</td></tr>
+        <tr><td>音声</td><td>外部MIC ×1 / スピーカー 5W@8Ω</td></tr>
+        <tr><td>SDカード</td><td>最大128GB拡張</td></tr>
+        <tr><td>電源</td><td>DC 24V</td></tr>
+        <tr><td>動作温度</td><td>-30℃ ～ +60℃</td></tr>
+        <tr><td>湿度</td><td>10%～95%、結露なし</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">典型的な用途</div>
+  <div class="app-box">EV充電駐車スペースの状態検出に使用し、駐車スペースの占有状況・充電/停車時間を識別します。入場・停車・出場時のナンバープレートを認識し、有線/無線でパーキングロック・小型ゲート等を連携制御。リアルタイムで駐車ロック状態・充電時間をスクロール表示することで、不正占有防止・超時間駐車制限・駐車スペースのデジタル収集を実現します。
+    <div class="app-tags">
+      <span class="app-tag">不正占有防止</span><span class="app-tag">リアルタイム情報発信</span>
+      <span class="app-tag">予約駐車シナリオ</span><span class="app-tag">RS485/Bluetoothロック</span>
+      <span class="app-tag">クラウドリモート管理</span><span class="app-tag">LEDインタラクティブ表示</span>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-brand">CAR IN INTERNATIONAL　凱映國際株式会社</div>
+  <div class="footer-contact">T：(02)2705-7716<br><a href="https://www.altob.com.tw" target="_blank">www.altob.com.tw</a></div>
+</div>
+</div>
+
+<!-- ===== English ===== -->
+<div data-lang="en">
+<div class="header">
+  <div>
+    <div class="brand-name">CAR IN INTERNATIONAL</div>
+    <div class="brand-sub">Kaiying International Co., Ltd.</div>
+    <div class="product-title">5MP Mid-Low Mount<br>License Plate Recognition Parking Post</div>
+    <div class="badge">PW-PS51 &nbsp;·&nbsp; Product Datasheet</div>
+  </div>
+  <img class="product-img" src="Japan_CarinSmart_Parking_Terminal_-2.png" alt="CAR IN Smart Parking Post" onerror="this.outerHTML='<div class=\'img-placeholder\'>Product Image</div>'">
+</div>
+<div class="section">
+  <div class="section-title">Product Features</div>
+  <div class="feature-grid">
+    <div class="feat-group">
+      <div class="feat-group-title">Camera</div>
+      <ul class="feat-list">
+        <li>Starlight optical sensor for low-light vehicle capture and recognition</li>
+        <li>5MP industrial grade, video resolution 2880×1620</li>
+        <li>Supports H.264 and H.265 encoding standards</li>
+        <li>Auto gain, auto white balance, wide dynamic range</li>
+        <li>Designed for complex lighting at EV charging stations</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">Performance</div>
+      <ul class="feat-list">
+        <li>One camera manages 2 parking spaces simultaneously</li>
+        <li>RS485 / cloud / Bluetooth (optional) parking lock control</li>
+        <li>Entry angle recognition &lt;65°, license plate recognition &gt;99%</li>
+        <li>USB, storage expansion, and traffic-light indicator interfaces</li>
+        <li>Dual Ethernet ports with daisy-chain networking</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">Functions</div>
+      <ul class="feat-list">
+        <li>Precise recognition of ICE and EV vehicles, plate numbers and colors</li>
+        <li>4-state parking detection: entering, parked, leaving, vacant</li>
+        <li>Foreign-object, loitering, and video-obstruction alerts</li>
+        <li>Built-in screen scrolls plate results and space status in real time</li>
+        <li>Customizable subtitles, font size, display format, and color</li>
+        <li>Black/white-list vehicle management</li>
+      </ul>
+    </div>
+    <div class="feat-group">
+      <div class="feat-group-title">Cloud</div>
+      <ul class="feat-list">
+        <li>Adaptive network technology ensures monitoring under packet-loss conditions</li>
+        <li>SDK / HTTP / MQTT integration for third-party development</li>
+        <li>Remote device management, OTA firmware updates, NTP time sync</li>
+        <li>Remote real-time image preview and lock control per space</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">Specifications</div>
+  <div class="spec-grid">
+    <div class="spec-card">
+      <table class="spec-table"><caption>Camera</caption>
+        <tr><td>Image Sensor</td><td>1/2.7" 5MP CMOS</td></tr>
+        <tr><td>Lens</td><td>2.5mm fixed focal length</td></tr>
+        <tr><td>Aperture</td><td>F2.0</td></tr>
+        <tr><td>Shutter</td><td>Auto/manual, 1/100,000 – 1/25s</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>Video / Image</caption>
+        <tr><td>Capture</td><td>2880×1620 @ 25fps</td></tr>
+        <tr><td>Resolution</td><td>2880×1620 / 2304×1296 (default) / 1080P / 720P</td></tr>
+        <tr><td>Frame Rate</td><td>1–25 fps configurable, default 12fps</td></tr>
+        <tr><td>Codec</td><td>H.264 / H.265, default H.264</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>Intelligence</caption>
+        <tr><td>Space Detection</td><td>Occupied/vacant, non-motor vehicle intrusion</td></tr>
+        <tr><td>Plate Recognition</td><td>Plate number and color recognition</td></tr>
+        <tr><td>Alerts</td><td>Loitering, cross-space parking, non-EV admission</td></tr>
+        <tr><td>Dwell Timing</td><td>Records and reports entry/exit timestamps</td></tr>
+      </table>
+    </div>
+    <div class="spec-card">
+      <table class="spec-table"><caption>Interfaces &amp; General</caption>
+        <tr><td>Ethernet</td><td>2× 100M Base-TX auto-adaptive</td></tr>
+        <tr><td>RS485 / USB</td><td>×2 / ×1</td></tr>
+        <tr><td>Audio</td><td>External MIC ×1 / Speaker 5W @ 8Ω</td></tr>
+        <tr><td>SD Card</td><td>Up to 128GB</td></tr>
+        <tr><td>Power</td><td>DC 24V</td></tr>
+        <tr><td>Operating Temp.</td><td>-30°C to +60°C</td></tr>
+        <tr><td>Humidity</td><td>10%–95%, non-condensing</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">Typical Applications</div>
+  <div class="app-box">Designed for EV charging space management, this unit detects space occupancy and charge/dwell duration, recognizes license plates at entry, parking, and exit events, and controls parking locks and barriers via wired or wireless connections. The built-in LED display scrolls real-time lock status and charging duration, enabling anti-squatting enforcement, overstay management, and digital space data collection.
+    <div class="app-tags">
+      <span class="app-tag">Anti-squatting &amp; Overstay</span><span class="app-tag">Real-time Info Display</span>
+      <span class="app-tag">Reservation Parking</span><span class="app-tag">RS485 / Bluetooth Lock</span>
+      <span class="app-tag">Cloud Remote Management</span><span class="app-tag">LED Interactive Display</span>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-brand">CAR IN INTERNATIONAL　Kaiying International Co., Ltd.</div>
+  <div class="footer-contact">T：(02)2705-7716<br><a href="https://www.altob.com.tw" target="_blank">www.altob.com.tw</a></div>
+</div>
+</div>
+
+</div>
+<script>
+function setLang(lang,btn){
+  document.querySelectorAll('[data-lang]').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el=>el.classList.remove('active'));
+  document.querySelector('[data-lang="'+lang+'"]').classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
